@@ -14,8 +14,8 @@ def main():
     chat_id = parser.parse_args().chat_id
     
     token_devman = os.environ.get("TOKEN_DEVMAN")
-    TG_TOKEN = os.environ.get("TG_TOKEN")
-    bot = telegram.Bot(token=TG_TOKEN)
+    tg_token = os.environ.get("TG_TOKEN")
+    bot = telegram.Bot(token=tg_token)
     headers = {
         'Authorization': token_devman
     }
