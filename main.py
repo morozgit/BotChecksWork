@@ -14,13 +14,13 @@ def main():
     chat_id = parser.parse_args().chat_id
     
     token_devman = os.environ.get("TOKEN_DEVMAN")
-    TG_token = os.environ.get("TG_TOKEN")
-    bot = telegram.Bot(token=TG_token)
+    TG_TOKEN = os.environ.get("TG_TOKEN")
+    bot = telegram.Bot(token=TG_TOKEN)
     headers = {
         'Authorization': token_devman
     }
     url = 'https://dvmn.org/api/long_polling/'
-    while (True):
+    while True:
         try:
             response = requests.get(url=url,
                                     headers=headers,
