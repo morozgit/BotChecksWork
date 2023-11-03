@@ -1,10 +1,23 @@
 import argparse
+import logging
 import os
 import textwrap
 
 import requests
 import telegram
 from dotenv import find_dotenv, load_dotenv
+
+
+class TelegramLogsHandler(logging.Handler):
+
+    def __init__(self, tg_bot, chat_id):
+        super().__init__()
+        self.chat_id = chat_id
+        self.tg_bot = tg_bot
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
 
 
 def main():
@@ -16,6 +29,10 @@ def main():
     token_devman = os.environ.get("TOKEN_DEVMAN")
     tg_token = os.environ.get("TG_TOKEN")
     bot = telegram.Bot(token=tg_token)
+   
+    bot.logger.addHandler(TelegramLogsHandler(bot, chat_id))
+    bot.logger.warning('Бот запущен')
+
     headers = {
         'Authorization': token_devman
     }
@@ -46,6 +63,10 @@ def main():
             continue
         except requests.exceptions.ConnectionError as err:
             print(err)
+            continue
+        except Exception as err:
+            error = f'Бот упал с ошибкой {str(err)}'
+            bot.logging.error(error)
 
 
 if __name__ == '__main__':
