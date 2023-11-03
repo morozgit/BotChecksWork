@@ -25,11 +25,11 @@ def main():
     parser = argparse.ArgumentParser(description='Бот отправляет уведомления о проверке работ')
     parser.add_argument('chat_id', help='Введите свой чат ID. Узнать можно @userinfobot')
     chat_id = parser.parse_args().chat_id
-    
+
     token_devman = os.environ.get("TOKEN_DEVMAN")
     tg_token = os.environ.get("TG_TOKEN")
     bot = telegram.Bot(token=tg_token)
-   
+
     bot.logger.addHandler(TelegramLogsHandler(bot, chat_id))
     bot.logger.warning('Бот запущен')
 
@@ -66,7 +66,7 @@ def main():
             continue
         except Exception as err:
             error = f'Бот упал с ошибкой {str(err)}'
-            bot.logging.error(error)
+            bot.logger.warning(error)
 
 
 if __name__ == '__main__':
